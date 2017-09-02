@@ -29,9 +29,7 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
     private Set<String> servers;
 
     static {
-        TimeZone timeZone = TimeZone.getTimeZone("UTC");
-        TimeZone.setDefault(timeZone);
-        JSON.defaultTimeZone = timeZone;
+        JSON.defaultTimeZone =  TimeZone.getTimeZone("UTC");
         FAST_JSON_ES_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
         serializeConfig.put(Date.class, new SimpleDateFormatSerializer(FAST_JSON_ES_DATE_FORMAT));
     }
@@ -42,7 +40,7 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
 
     public <T> boolean save(String indexName, String routingKey, T data) {
         String json = JSON.toJSONString(data, serializeConfig);
-        indexName = indexName + "-" + Utils.formatDate(Calendar.getInstance().getTime());
+        indexName = indexName + "-" + Utils.formatUtcDate(Calendar.getInstance().getTime());
         IndexResponse response = client.prepareIndex(indexName, DEFAULT_TYPE)
                 .setRouting(routingKey)
                 .setSource(json)
@@ -52,7 +50,7 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
     }
 
     public <T> boolean batchSave(String indexName, String routingKey, List<T> batchData) {
-        indexName = indexName + "-" + Utils.formatDate(Calendar.getInstance().getTime());
+        indexName = indexName + "-" + Utils.formatUtcDate(Calendar.getInstance().getTime());
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (T data : batchData) {
             bulkRequest.add(client.prepareIndex(indexName, DEFAULT_TYPE)

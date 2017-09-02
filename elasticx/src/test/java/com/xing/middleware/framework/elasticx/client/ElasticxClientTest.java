@@ -22,7 +22,7 @@ public class ElasticxClientTest extends TestCase {
         ArrayList<Person> datas = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Person data = new Person();
-            data.setName("test");
+            data.setName("test2");
             data.setAge(i);
             data.setBirthDay(Calendar.getInstance().getTime());
             datas.add(data);

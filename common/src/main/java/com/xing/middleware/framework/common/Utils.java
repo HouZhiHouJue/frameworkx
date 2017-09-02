@@ -5,19 +5,24 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Jecceca on 2017/8/28.
  */
 public class Utils {
-    private static DateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+    private static DateFormat simpleDateFormat;
 
-    public static String formatDate(Date date) {
+    static {
+        simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
+    public static String formatUtcDate(Date date) {
         synchronized (simpleDateFormat) {
             return simpleDateFormat.format(date);
         }
     }
-
 
 
     public static String getThrowableDetail(Throwable e) {
