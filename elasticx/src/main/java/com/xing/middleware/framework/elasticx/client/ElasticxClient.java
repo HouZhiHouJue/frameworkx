@@ -29,7 +29,7 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
     private Set<String> servers;
 
     static {
-        JSON.defaultTimeZone =  TimeZone.getTimeZone("UTC");
+        JSON.defaultTimeZone = TimeZone.getTimeZone("UTC");
         FAST_JSON_ES_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
         serializeConfig.put(Date.class, new SimpleDateFormatSerializer(FAST_JSON_ES_DATE_FORMAT));
     }
@@ -38,23 +38,23 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
         this.servers = servers;
     }
 
-    public <T> boolean save(String indexName, String routingKey, T data) {
+    public <T> boolean save(String indexName, T data) {
         String json = JSON.toJSONString(data, serializeConfig);
-        indexName = indexName + "-" + Utils.formatUtcDate(Calendar.getInstance().getTime());
+        indexName = String.format("cu-%s-%s", indexName, Utils.formatUtcDate(Calendar.getInstance().getTime()));
         IndexResponse response = client.prepareIndex(indexName, DEFAULT_TYPE)
-                .setRouting(routingKey)
+                //.setRouting(routingKey)
                 .setSource(json)
                 .execute()
                 .actionGet();
         return true;
     }
 
-    public <T> boolean batchSave(String indexName, String routingKey, List<T> batchData) {
-        indexName = indexName + "-" + Utils.formatUtcDate(Calendar.getInstance().getTime());
+    public <T> boolean batchSave(String indexName, List<T> batchData) {
+        indexName = String.format("cu-%s-%s", indexName, Utils.formatUtcDate(Calendar.getInstance().getTime()));
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (T data : batchData) {
             bulkRequest.add(client.prepareIndex(indexName, DEFAULT_TYPE)
-                    .setRouting(routingKey)
+                    //.setRouting(routingKey)
                     .setSource(JSON.toJSONString(data, serializeConfig)));
         }
         BulkResponse bulkResponse = bulkRequest.execute().actionGet();

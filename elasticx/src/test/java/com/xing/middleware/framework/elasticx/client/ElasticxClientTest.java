@@ -28,8 +28,8 @@ public class ElasticxClientTest extends TestCase {
             datas.add(data);
         }
         for (int i = 0; i < 10; i++) {
-            boolean result1 = elasticxClient.save("cu-test", "test", datas.get(0));
-            boolean result2 = elasticxClient.batchSave("cu-test", "test", datas);
+            boolean result1 = elasticxClient.save("cu-test", datas.get(0));
+            boolean result2 = elasticxClient.batchSave("cu-test", datas);
             Assert.assertTrue(result1 && result2);
         }
         elasticxClient.destroy();
