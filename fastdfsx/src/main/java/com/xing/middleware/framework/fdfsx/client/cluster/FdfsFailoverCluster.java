@@ -10,8 +10,9 @@ import java.io.IOException;
 
 /**
  * Created by Jecceca on 2017/9/3.
+ * FailoverCluster Will Retry All The Time
  */
-public class FdfsFailoverCluster {
+public class FdfsFailoverCluster implements FdfsCluster {
     GenericObjectPool<StorageClientExt> objectPool;
     int maxTry;
 
