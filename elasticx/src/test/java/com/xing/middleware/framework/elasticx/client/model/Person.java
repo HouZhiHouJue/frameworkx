@@ -1,4 +1,4 @@
-package com.xing.middleware.framework.elasticx.client.pojo;
+package com.xing.middleware.framework.elasticx.client.model;
 
 import java.util.Date;
 

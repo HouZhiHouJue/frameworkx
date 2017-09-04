@@ -1,42 +1,29 @@
 package com.xing.middleware.framework.rocketx.client;
 
 import com.alibaba.rocketmq.client.consumer.DefaultMQPushConsumer;
-import com.alibaba.rocketmq.client.consumer.listener.MessageListenerConcurrently;
-import com.alibaba.rocketmq.client.consumer.listener.MessageListenerOrderly;
-import com.alibaba.rocketmq.client.exception.MQClientException;
+import com.alibaba.rocketmq.client.consumer.listener.MessageListener;
 import com.alibaba.rocketmq.common.consumer.ConsumeFromWhere;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
 /**
  * Created by Jecceca on 2017/8/29.
  */
-@Component
 public class Consumer implements InitializingBean, DisposableBean {
-    private DefaultMQPushConsumer consumer;
-    private String namesrvAddr;
-    private String consumerGroup;
+    protected DefaultMQPushConsumer consumer;
+    protected String namesrvAddr;
+    protected String consumerGroup;
+    protected MessageListener messageListener;
 
-    public Consumer(String consumerGroup, String namesrvAddr) {
+    public Consumer(String consumerGroup, String namesrvAddr, MessageListener messageListener) {
         this.consumerGroup = consumerGroup;
         this.namesrvAddr = namesrvAddr;
+        this.messageListener = messageListener;
     }
 
-    public Consumer subscribe(String topic, String subExpression, MessageListenerOrderly messageListenerOrderly) throws Exception {
+    protected void subscribe(String topic, String subExpression, MessageListener messageListener) throws Exception {
         consumer.subscribe(topic, subExpression);
-        consumer.registerMessageListener(messageListenerOrderly);
-        return this;
-    }
-
-    public Consumer subscribe(String topic, String subExpression, MessageListenerConcurrently messageListenerConcurrently) throws Exception {
-        consumer.subscribe(topic, subExpression);
-        consumer.registerMessageListener(messageListenerConcurrently);
-        return this;
-    }
-
-    public void start() throws MQClientException {
-        consumer.start();
+        consumer.registerMessageListener(messageListener);
     }
 
     @Override
@@ -49,7 +36,10 @@ public class Consumer implements InitializingBean, DisposableBean {
         consumer = new DefaultMQPushConsumer(this.consumerGroup);
         consumer.setNamesrvAddr(this.namesrvAddr);
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
-        consumer.setConsumeTimeout(30);
+        consumer.setConsumeTimeout(100);
         consumer.setMaxReconsumeTimes(3);
+        TopicHandler topicHandler = messageListener.getClass().getAnnotation(TopicHandler.class);
+        subscribe(topicHandler.topic(), topicHandler.subExpression(), messageListener);
+        consumer.start();
     }
 }

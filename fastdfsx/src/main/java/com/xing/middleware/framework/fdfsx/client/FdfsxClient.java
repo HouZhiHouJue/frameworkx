@@ -10,16 +10,14 @@ import org.csource.fastdfs.ClientGlobal;
 import org.csource.fastdfs.TrackerClient;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
 /**
  * Created by Jecceca on 2017/8/30.
  */
-@Component
 public class FdfsxClient implements InitializingBean, DisposableBean {
-    private String propsFilePath;
-    private int maxRetry;
-    FdfsCluster fdfsCluster;
+    protected String propsFilePath;
+    protected int maxRetry;
+    protected FdfsCluster fdfsCluster;
 
     public FdfsxClient(String propsFilePath, int maxRetry) {
         this.propsFilePath = propsFilePath;

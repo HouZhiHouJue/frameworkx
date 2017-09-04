@@ -1,9 +1,12 @@
 package com.xing.middleware.framework.elasticx.client;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.xing.middleware.framework.common.Utils;
+import com.xing.middleware.framework.elasticx.client.cluster.FailoverServiceCluster;
+import com.xing.middleware.framework.elasticx.client.cluster.ServiceCluster;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexResponse;
@@ -13,20 +16,22 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by Jecceca on 2017/8/28.
  */
-@Component
 public class ElasticxClient implements InitializingBean, DisposableBean {
-    private static SerializeConfig serializeConfig = new SerializeConfig();
-    private static final String FAST_JSON_ES_DATE_FORMAT;
-    private static final String DEFAULT_TYPE = "default";
-    private TransportClient client;
-    private Set<String> servers;
+    protected static SerializeConfig serializeConfig = new SerializeConfig();
+    protected static final String FAST_JSON_ES_DATE_FORMAT;
+    protected static final String DEFAULT_TYPE = "default";
+    protected TransportClient client;
+    protected String[] servers;
+    protected ServiceCluster serviceCluster;
 
     static {
         JSON.defaultTimeZone = TimeZone.getTimeZone("UTC");
@@ -34,8 +39,8 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
         serializeConfig.put(Date.class, new SimpleDateFormatSerializer(FAST_JSON_ES_DATE_FORMAT));
     }
 
-    public ElasticxClient(Set<String> servers) {
-        this.servers = servers;
+    public ElasticxClient(String servers) {
+        this.servers = servers.split(",");
     }
 
     public <T> boolean save(String indexName, T data) {
@@ -64,6 +69,10 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
         return true;
     }
 
+    public <T> T query(String sql, TypeReference<T> typeReference) throws Exception {
+        return serviceCluster.query(sql, typeReference);
+    }
+
     @Override
     public void destroy() throws Exception {
         client.close();
@@ -77,5 +86,6 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
         for (String server : servers) {
             client = client.addTransportAddress(new InetSocketTransportAddress(server, 9800));
         }
+        serviceCluster = new FailoverServiceCluster(1, servers);
     }
 }

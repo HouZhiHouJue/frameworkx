@@ -12,19 +12,17 @@ import com.alibaba.rocketmq.remoting.common.RemotingHelper;
 import com.alibaba.rocketmq.remoting.exception.RemotingException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 
 /**
  * Created by Jecceca on 2017/8/29.
  */
-@Component
 public class Producer implements InitializingBean, DisposableBean {
 
-    private String producerGroup;
-    private DefaultMQProducer producer;
-    private MessageQueueSelector messageQueueSelector;
+    protected String producerGroup;
+    protected DefaultMQProducer producer;
+    protected MessageQueueSelector messageQueueSelector;
 
     public Producer(String producerGroup, String namesrvAddr) {
         this(producerGroup, namesrvAddr, 1, 2, null);

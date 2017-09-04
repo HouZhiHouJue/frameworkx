@@ -1,12 +1,13 @@
 package com.xing.middleware.framework.elasticx.client;
 
-import com.xing.middleware.framework.elasticx.client.pojo.Person;
+import com.alibaba.fastjson.TypeReference;
+import com.xing.middleware.framework.elasticx.client.model.QueryListResult;
+import com.xing.middleware.framework.elasticx.client.model.Person;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 
 /**
  * Created by Jecceca on 2017/8/28.
@@ -14,10 +15,7 @@ import java.util.HashSet;
 public class ElasticxClientTest extends TestCase {
 
     public void testElasticx() throws Exception {
-        HashSet<String> servers = new HashSet<>();
-        servers.add("139.224.137.75");
-        servers.add("139.224.137.83");
-        ElasticxClient elasticxClient = new ElasticxClient(servers);
+        ElasticxClient elasticxClient = new ElasticxClient("139.224.137.75,139.224.137.83");
         elasticxClient.afterPropertiesSet();
         ArrayList<Person> datas = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -27,11 +25,10 @@ public class ElasticxClientTest extends TestCase {
             data.setBirthDay(Calendar.getInstance().getTime());
             datas.add(data);
         }
-        for (int i = 0; i < 10; i++) {
-            boolean result1 = elasticxClient.save("cu-test", datas.get(0));
-            boolean result2 = elasticxClient.batchSave("cu-test", datas);
-            Assert.assertTrue(result1 && result2);
-        }
+        boolean result = elasticxClient.batchSave("cu-test", datas);
+        QueryListResult<Person> queryListResult = elasticxClient.query("SELECT * FROM cu-test-2017.09.02 limit 10", new TypeReference<QueryListResult<Person>>() {
+        });
+        Assert.assertTrue(result);
         elasticxClient.destroy();
     }
 }

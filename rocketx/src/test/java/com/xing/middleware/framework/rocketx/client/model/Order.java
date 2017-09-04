@@ -1,4 +1,4 @@
-package com.xing.middleware.framework.rocketx.client.pojo;
+package com.xing.middleware.framework.rocketx.client.model;
 
 /**
  * Created by Jecceca on 2017/8/29.

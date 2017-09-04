@@ -1,19 +1,19 @@
-package com.xing.middleware.framework.rocketx.client.handler;
+package com.xing.demo.bo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeOrderlyContext;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeOrderlyStatus;
 import com.alibaba.rocketmq.client.consumer.listener.MessageListenerOrderly;
 import com.alibaba.rocketmq.common.message.MessageExt;
+import com.xing.demo.model.Order;
 import com.xing.middleware.framework.rocketx.client.TopicHandler;
-import com.xing.middleware.framework.rocketx.client.model.Order;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Created by Jecceca on 2017/8/29.
+ * Created by Jecceca on 2017/9/4.
  */
 @TopicHandler(topic = "fxTestTopic")
 public class MessageListenerOrderlyHandler implements MessageListenerOrderly {
