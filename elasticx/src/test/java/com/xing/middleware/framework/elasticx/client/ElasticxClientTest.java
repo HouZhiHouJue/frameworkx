@@ -25,7 +25,7 @@ public class ElasticxClientTest extends TestCase {
             data.setBirthDay(Calendar.getInstance().getTime());
             datas.add(data);
         }
-        boolean result = elasticxClient.batchSave("cu-test", datas);
+        boolean result = elasticxClient.batchSave("test", datas);
         QueryListResult<Person> queryListResult = elasticxClient.query("SELECT * FROM cu-test-2017.09.02 limit 10", new TypeReference<QueryListResult<Person>>() {
         });
         Assert.assertTrue(result);

@@ -6,6 +6,7 @@ import com.alibaba.rocketmq.client.exception.MQClientException;
 import com.alibaba.rocketmq.client.producer.SendResult;
 import com.alibaba.rocketmq.client.producer.SendStatus;
 import com.alibaba.rocketmq.remoting.exception.RemotingException;
+
 import com.google.common.io.Files;
 import com.xing.demo.model.Order;
 import com.xing.demo.model.Person;
@@ -53,7 +54,7 @@ public class DemoController {
             data.setBirthDay(Calendar.getInstance().getTime());
             datas.add(data);
         }
-        boolean result = elasticxClient.batchSave("cu-test", datas);
+        boolean result = elasticxClient.batchSave("test", datas);
         QueryListResult<Person> queryListResult = elasticxClient.query("SELECT * FROM cu-test-2017.09.02 limit 10", new TypeReference<QueryListResult<Person>>() {
         });
         Assert.isTrue(result);

@@ -28,15 +28,9 @@ public class StorageClientExt extends StorageClient {
 
     public boolean isValid() {
         try {
-            boolean trackerConnected = this.trackerServer.getSocket().isConnected();
-            boolean trackerClosed = this.trackerServer.getSocket().isClosed();
-            boolean storageConnected = this.storageServer.getSocket().isConnected();
-            boolean storageClosed = this.storageServer.getSocket().isClosed();
             boolean result = valid
-                    && trackerConnected &&
-                    !trackerClosed
-                    && storageConnected
-                    && !storageClosed;
+                    && this.trackerServer.getSocket().isConnected()
+                    && this.storageServer.getSocket().isConnected();
             return result;
         } catch (Throwable e) {
             return false;
