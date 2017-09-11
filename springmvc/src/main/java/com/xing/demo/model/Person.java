@@ -1,5 +1,7 @@
 package com.xing.demo.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 /**

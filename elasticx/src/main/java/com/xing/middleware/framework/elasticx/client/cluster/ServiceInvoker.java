@@ -20,7 +20,8 @@ public class ServiceInvoker {
                 .build();
         Response response = asyncHttpClient.executeRequest(request).get();
         if (response.getStatusCode() == 200) {
-            return JSON.parseObject(response.getResponseBody(), typeReference);
+            String resp = response.getResponseBody();
+            return JSON.parseObject(resp, typeReference);
         }
         return null;
     }

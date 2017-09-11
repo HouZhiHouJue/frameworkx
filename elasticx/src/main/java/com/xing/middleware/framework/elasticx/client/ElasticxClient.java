@@ -27,16 +27,15 @@ import java.util.TimeZone;
  */
 public class ElasticxClient implements InitializingBean, DisposableBean {
     protected static SerializeConfig serializeConfig = new SerializeConfig();
-    protected static final String FAST_JSON_ES_DATE_FORMAT;
     protected static final String DEFAULT_TYPE = "default";
     protected TransportClient client;
     protected String[] servers;
     protected ServiceCluster serviceCluster;
 
     static {
-        JSON.defaultTimeZone = TimeZone.getTimeZone("UTC");
-        FAST_JSON_ES_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-        serializeConfig.put(Date.class, new SimpleDateFormatSerializer(FAST_JSON_ES_DATE_FORMAT));
+//        JSON.defaultTimeZone = TimeZone.getTimeZone("UTC");
+//        FAST_JSON_ES_DATE_FORMAT = "yyyy/MM/dd HH:mm:ss.SSS";
+//        serializeConfig.put(Date.class, new SimpleDateFormatSerializer(FAST_JSON_ES_DATE_FORMAT));
     }
 
     public ElasticxClient(String servers) {
@@ -58,9 +57,10 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
         indexName = String.format("cu-%s-%s", indexName, Utils.formatUtcDate(Calendar.getInstance().getTime()));
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (T data : batchData) {
+            String json = JSON.toJSONString(data, serializeConfig);
             bulkRequest.add(client.prepareIndex(indexName, DEFAULT_TYPE)
                     //.setRouting(routingKey)
-                    .setSource(JSON.toJSONString(data, serializeConfig)));
+                    .setSource(json));
         }
         BulkResponse bulkResponse = bulkRequest.execute().actionGet();
         if (bulkResponse.hasFailures()) {
