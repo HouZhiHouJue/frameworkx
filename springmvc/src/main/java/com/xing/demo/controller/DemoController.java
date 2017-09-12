@@ -55,7 +55,7 @@ public class DemoController {
             datas.add(data);
         }
         boolean result = elasticxClient.batchSave("test", datas);
-        QueryListResult<Person> queryListResult = elasticxClient.query("SELECT * FROM cu-test-2017.09.11 order by birthDay desc limit 10"
+        QueryListResult<Person> queryListResult = elasticxClient.query("SELECT * FROM cu-test-2017.09.12 order by birthDay desc limit 10"
                 , new TypeReference<QueryListResult<Person>>(Person.class) {
                 });
         Person person = queryListResult.getHits().getHits().get(0).getSource();
