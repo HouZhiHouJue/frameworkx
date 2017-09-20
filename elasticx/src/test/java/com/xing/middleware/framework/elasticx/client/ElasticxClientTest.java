@@ -1,5 +1,7 @@
 package com.xing.middleware.framework.elasticx.client;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.ElasticSearchDruidDataSourceFactory;
 import com.alibaba.fastjson.TypeReference;
 
 import com.xing.middleware.framework.elasticx.client.model.Person;
@@ -7,8 +9,12 @@ import com.xing.middleware.framework.elasticx.client.model.QueryListResult;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Properties;
 
 /**
  * Created by Jecceca on 2017/8/28.
@@ -38,6 +44,7 @@ public class ElasticxClientTest extends TestCase {
     public void testJDBC() throws Exception {
         Properties properties = new Properties();
         properties.put("url", "jdbc:elasticsearch://139.224.137.75:9800/");
+        properties.put("testWhileIdle", "false");
         DruidDataSource dds = (DruidDataSource) ElasticSearchDruidDataSourceFactory.createDataSource(properties);
         Connection connection = dds.getConnection();
         String sql = "SELECT\n" +
@@ -73,10 +80,14 @@ public class ElasticxClientTest extends TestCase {
                 "\n";
         PreparedStatement ps = connection.prepareStatement(sql);
         ResultSet resultSet = ps.executeQuery();
-
+        while (resultSet.next()) {
+            System.out.println(resultSet.getString("provinceName") + ","
+                    + resultSet.getDouble("totalQuantity") + "," + resultSet.getString("districtName"));
+        }
         ps.close();
         connection.close();
         dds.close();
+        Thread.sleep(10 * 1000);
     }
 }
 
