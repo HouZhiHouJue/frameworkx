@@ -9,6 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>fastdfsx</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>../disruptorx</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>

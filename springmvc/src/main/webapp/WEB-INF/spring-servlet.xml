@@ -20,13 +20,13 @@
         </property>
     </bean>
 
-    <bean id="elasticxClient" class="com.xing.middleware.framework.elasticx.client.ElasticxClient">
+    <bean id="elasticxClient" class="com.xing.middleware.framework.disruptor.demo.middleware.framework.elasticx.client.ElasticxClient">
         <constructor-arg name="servers">
             <value>${elastic.servers}</value>
         </constructor-arg>
     </bean>
 
-    <bean id="fdfsxClient" class="com.xing.middleware.framework.fdfsx.client.FdfsxClient">
+    <bean id="fdfsxClient" class="com.xing.middleware.framework.disruptor.demo.middleware.framework.fdfsx.client.FdfsxClient">
         <constructor-arg name="propsFilePath">
             <value>${fdfs.propsFilePath}</value>
         </constructor-arg>
@@ -35,7 +35,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="producer" class="com.xing.middleware.framework.rocketx.client.Producer">
+    <bean id="producer" class="com.xing.middleware.framework.disruptor.demo.middleware.framework.rocketx.client.Producer">
         <constructor-arg name="producerGroup">
             <value>${app.systemAlias}</value>
         </constructor-arg>
@@ -44,7 +44,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="consumer1" class="com.xing.middleware.framework.rocketx.client.Consumer">
+    <bean id="consumer1" class="com.xing.middleware.framework.disruptor.demo.middleware.framework.rocketx.client.Consumer">
         <constructor-arg name="consumerGroup">
             <value>${app.systemAlias}</value>
         </constructor-arg>
@@ -54,7 +54,7 @@
         <constructor-arg name="messageListener" ref="messageListenerOrderlyHandler"/>
     </bean>
 
-    <bean id="messageListenerOrderlyHandler" class="com.xing.demo.bo.MessageListenerOrderlyHandler">
+    <bean id="messageListenerOrderlyHandler" class="com.xing.middleware.framework.disruptor.demo.demo.bo.MessageListenerOrderlyHandler">
     </bean>
 
     <bean id="jsonHttpMessageConverter"
