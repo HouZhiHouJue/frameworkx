@@ -134,6 +134,11 @@
                 <artifactId>druid</artifactId>
                 <version>1.0.15</version>
             </dependency>
+            <dependency>
+                <groupId>commons-dbutils</groupId>
+                <artifactId>commons-dbutils</artifactId>
+                <version>1.7</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

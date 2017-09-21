@@ -1,6 +1,5 @@
 package com.xing.demo.controller;
 
-import com.alibaba.druid.pool.ElasticSearchDruidDataSource;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.rocketmq.client.exception.MQBrokerException;
 import com.alibaba.rocketmq.client.exception.MQClientException;
@@ -9,9 +8,9 @@ import com.alibaba.rocketmq.client.producer.SendStatus;
 import com.alibaba.rocketmq.remoting.exception.RemotingException;
 
 import com.google.common.io.Files;
+import com.xing.demo.model.DemoBean;
 import com.xing.demo.model.Order;
 import com.xing.demo.model.Person;
-import com.xing.middleware.framework.common.Utils;
 import com.xing.middleware.framework.elasticx.client.ElasticxClient;
 import com.xing.middleware.framework.elasticx.client.model.QueryListResult;
 import com.xing.middleware.framework.fdfsx.client.FdfsFileInfo;
@@ -28,11 +27,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Jecceca on 2017/9/4.
@@ -42,9 +39,6 @@ import java.util.Calendar;
 public class DemoController {
     @Autowired
     private ElasticxClient elasticxClient;
-
-    @Autowired
-    private ElasticSearchDruidDataSource elasticSearchDruidDataSource;
 
     @Autowired
     private FdfsxClient fdfsxClient;
@@ -77,7 +71,7 @@ public class DemoController {
     public
     @ResponseBody
     String esJdbc() throws Exception {
-        String sql = "SELECT\n" +
+        String groupSql = "SELECT\n" +
                 "\tprovinceId,\n" +
                 "\tprovinceName,\n" +
                 "\tcityId,\n" +
@@ -106,22 +100,8 @@ public class DemoController {
                 "\tvehicleOperateTypeId,\n" +
                 "\tvehicleOperateTypeCode,\n" +
                 "\tvehicleOperateTypeName";
-        Connection connection = null;
-        PreparedStatement ps = null;
-        ResultSet resultSet = null;
-        try {
-            connection = elasticSearchDruidDataSource.getConnection();
-            ps = connection.prepareStatement(sql);
-            resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("provinceName") + ","
-                        + resultSet.getDouble("totalQuantity") + "," + resultSet.getString("districtName"));
-            }
-        } finally {
-            Utils.closeQuietly(resultSet);
-            Utils.closeQuietly(ps);
-            Utils.closeQuietly(connection);
-        }
+        List<DemoBean> demoBeanList = elasticxClient.query(groupSql, DemoBean.class);
+        Assert.notEmpty(demoBeanList);
         return "Hello Elasticsearch Jdbc";
     }
 
