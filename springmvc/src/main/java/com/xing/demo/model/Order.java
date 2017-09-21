@@ -1,4 +1,4 @@
-package com.xing.middleware.framework.springmvc.demo.model;
+package com.xing.demo.model;
 
 /**
  * Created by Jecceca on 2017/9/4.

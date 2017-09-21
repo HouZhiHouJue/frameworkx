@@ -1,11 +1,11 @@
-package com.xing.middleware.framework.springmvc.demo.bo;
+package com.xing.demo.bo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeOrderlyContext;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeOrderlyStatus;
 import com.alibaba.rocketmq.client.consumer.listener.MessageListenerOrderly;
 import com.alibaba.rocketmq.common.message.MessageExt;
-import com.xing.middleware.framework.springmvc.demo.model.Order;
+import com.xing.demo.model.Order;
 import com.xing.middleware.framework.rocketx.client.TopicHandler;
 
 import java.nio.charset.StandardCharsets;

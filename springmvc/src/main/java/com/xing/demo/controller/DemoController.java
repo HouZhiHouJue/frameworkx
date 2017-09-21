@@ -1,5 +1,6 @@
-package com.xing.middleware.framework.springmvc.demo.controller;
+package com.xing.demo.controller;
 
+import com.alibaba.druid.pool.ElasticSearchDruidDataSource;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.rocketmq.client.exception.MQBrokerException;
 import com.alibaba.rocketmq.client.exception.MQClientException;
@@ -8,14 +9,15 @@ import com.alibaba.rocketmq.client.producer.SendStatus;
 import com.alibaba.rocketmq.remoting.exception.RemotingException;
 
 import com.google.common.io.Files;
-import com.xing.middleware.framework.springmvc.demo.model.Order;
-import com.xing.middleware.framework.springmvc.demo.model.Person;
+import com.xing.demo.model.Order;
+import com.xing.demo.model.Person;
+import com.xing.middleware.framework.common.Utils;
+import com.xing.middleware.framework.elasticx.client.ElasticxClient;
 import com.xing.middleware.framework.elasticx.client.model.QueryListResult;
+import com.xing.middleware.framework.fdfsx.client.FdfsFileInfo;
 import com.xing.middleware.framework.fdfsx.client.FdfsxClient;
 import com.xing.middleware.framework.fdfsx.client.UploadResult;
 import com.xing.middleware.framework.rocketx.client.Producer;
-import com.xing.middleware.framework.elasticx.client.ElasticxClient;
-import com.xing.middleware.framework.fdfsx.client.FdfsFileInfo;
 import org.csource.common.NameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -37,6 +42,10 @@ import java.util.Calendar;
 public class DemoController {
     @Autowired
     private ElasticxClient elasticxClient;
+
+    @Autowired
+    private ElasticSearchDruidDataSource elasticSearchDruidDataSource;
+
     @Autowired
     private FdfsxClient fdfsxClient;
     @Autowired
@@ -55,13 +64,65 @@ public class DemoController {
             datas.add(data);
         }
         boolean result = elasticxClient.batchSave("test", datas);
-        QueryListResult<Person> queryListResult = elasticxClient.query("SELECT * FROM cu-test-2017.09.13 order by birthDay desc limit 10"
+        QueryListResult<Person> queryListResult = elasticxClient.query("SELECT * FROM cu-test-2017.09.20 order by birthDay desc limit 10"
                 , new TypeReference<QueryListResult<Person>>(Person.class) {
                 });
         Person person = queryListResult.getHits().getHits().get(0).getSource();
         Assert.isTrue(result);
         Assert.notNull(person);
         return "Hello Elasticsearch";
+    }
+
+    @RequestMapping(value = "/esJdbc", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String esJdbc() throws Exception {
+        String sql = "SELECT\n" +
+                "\tprovinceId,\n" +
+                "\tprovinceName,\n" +
+                "\tcityId,\n" +
+                "\tcityName,\n" +
+                "\tdistrictId,\n" +
+                "\tdistrictName,\n" +
+                "\tcompanyId,\n" +
+                "\tcompanyName,\n" +
+                "\tvehicleOperateTypeId,\n" +
+                "\tvehicleOperateTypeCode,\n" +
+                "\tvehicleOperateTypeName,\n" +
+                "\tsum(ONLINE) AS onlineQuantity,\n" +
+                "\tcount(*) AS totalQuantity,\n" +
+                "\tsum(todayDuration) AS totalOnlineTime\n" +
+                "FROM\n" +
+                "\tcu-vehicle_state_history_data-*\n" +
+                "GROUP BY\n" +
+                "\tprovinceId,\n" +
+                "\tprovinceName,\n" +
+                "\tcityId,\n" +
+                "\tcityName,\n" +
+                "\tdistrictId,\n" +
+                "\tdistrictName,\n" +
+                "\tcompanyId,\n" +
+                "\tcompanyName,\n" +
+                "\tvehicleOperateTypeId,\n" +
+                "\tvehicleOperateTypeCode,\n" +
+                "\tvehicleOperateTypeName";
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet resultSet = null;
+        try {
+            connection = elasticSearchDruidDataSource.getConnection();
+            ps = connection.prepareStatement(sql);
+            resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("provinceName") + ","
+                        + resultSet.getDouble("totalQuantity") + "," + resultSet.getString("districtName"));
+            }
+        } finally {
+            Utils.closeQuietly(resultSet);
+            Utils.closeQuietly(ps);
+            Utils.closeQuietly(connection);
+        }
+        return "Hello Elasticsearch Jdbc";
     }
 
     @RequestMapping(value = "/rocketmq", method = RequestMethod.GET)

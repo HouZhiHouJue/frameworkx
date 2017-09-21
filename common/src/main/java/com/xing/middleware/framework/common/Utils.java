@@ -39,4 +39,12 @@ public class Utils {
         return detailMessage;
     }
 
+    public static void closeQuietly(AutoCloseable autoCloseable) {
+        try {
+            if (autoCloseable != null)
+                autoCloseable.close();
+        } catch (Throwable e) {
+        }
+    }
+
 }

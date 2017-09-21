@@ -1,6 +1,4 @@
-package com.xing.middleware.framework.springmvc.demo.model;
-
-import com.alibaba.fastjson.annotation.JSONField;
+package com.xing.demo.model;
 
 import java.util.Date;
 
