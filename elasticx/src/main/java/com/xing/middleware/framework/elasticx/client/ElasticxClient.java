@@ -76,7 +76,6 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
         return true;
     }
 
-    @Deprecated
     public <T> T query(String sql, TypeReference<T> typeReference) throws Exception {
         String s = serviceCluster.query(sql);
         if (Utils.isNullOrEmpty(s)) return null;
