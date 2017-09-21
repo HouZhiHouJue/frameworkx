@@ -76,17 +76,39 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
         return true;
     }
 
+    /**
+     * http request -> string -> parse to T
+     * @param sql
+     * @param typeReference
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
     public <T> T query(String sql, TypeReference<T> typeReference) throws Exception {
         String s = serviceCluster.query(sql);
         if (Utils.isNullOrEmpty(s)) return null;
         return JSON.parseObject(s, typeReference);
     }
 
+    /**
+     * http request -> string
+     * @param sql
+     * @return
+     * @throws Exception
+     */
     public String query(String sql) throws Exception {
         String s = serviceCluster.query(sql);
         return s;
     }
 
+    /**
+     * tcp request -> jdbc protocol -> use dbutils to parse
+     * @param sql
+     * @param clazz
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
     public <T> List<T> query(String sql, Class<T> clazz) throws Exception {
         QueryRunner qr = new QueryRunner(elasticSearchDruidDataSource);
         List<T> datas = qr.query(sql, new BeanListHandler<T>(clazz));
