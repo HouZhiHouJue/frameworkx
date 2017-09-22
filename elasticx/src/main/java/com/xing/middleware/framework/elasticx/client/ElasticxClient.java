@@ -32,6 +32,7 @@ import java.util.TimeZone;
 public class ElasticxClient implements InitializingBean, DisposableBean {
 
     protected ElasticSearchDruidDataSource elasticSearchDruidDataSource;
+    protected QueryRunner queryRunner;
     protected static SerializeConfig serializeConfig = new SerializeConfig();
     protected static final String DEFAULT_TYPE = "default";
     protected static final String FAST_JSON_ES_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
@@ -44,9 +45,10 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
         serializeConfig.put(Date.class, new SimpleDateFormatSerializer(FAST_JSON_ES_DATE_FORMAT));
     }
 
-    public ElasticxClient(String servers,ElasticSearchDruidDataSource druidDataSource) {
+    public ElasticxClient(String servers, ElasticSearchDruidDataSource druidDataSource) {
         this.servers = servers.split(",");
         this.elasticSearchDruidDataSource = druidDataSource;
+        queryRunner = new QueryRunner(elasticSearchDruidDataSource);
     }
 
     public <T> boolean save(String indexName, T data) {
@@ -78,6 +80,7 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
 
     /**
      * http request -> string -> parse to T
+     *
      * @param sql
      * @param typeReference
      * @param <T>
@@ -92,6 +95,7 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
 
     /**
      * http request -> string
+     *
      * @param sql
      * @return
      * @throws Exception
@@ -103,6 +107,7 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
 
     /**
      * tcp request -> jdbc protocol -> use dbutils to parse
+     *
      * @param sql
      * @param clazz
      * @param <T>
@@ -110,8 +115,7 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
      * @throws Exception
      */
     public <T> List<T> query(String sql, Class<T> clazz) throws Exception {
-        QueryRunner qr = new QueryRunner(elasticSearchDruidDataSource);
-        List<T> datas = qr.query(sql, new BeanListHandler<T>(clazz));
+        List<T> datas = queryRunner.query(sql, new BeanListHandler<T>(clazz));
         return datas;
     }
 
