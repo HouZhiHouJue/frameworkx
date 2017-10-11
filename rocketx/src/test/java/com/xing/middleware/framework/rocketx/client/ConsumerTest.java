@@ -8,10 +8,10 @@ import junit.framework.TestCase;
  */
 public class ConsumerTest extends TestCase {
     public void testConsumer() throws Exception {
-        Consumer consumer = new Consumer("ConsumerGroup", "1139.224.137.97:9876;139.224.137.97:9876",
+        Consumer consumer = new Consumer("ConsumerGroup5", "139.224.137.97:9876;139.224.137.97:9876",
                 new MessageListenerOrderlyHandler());
         consumer.afterPropertiesSet();
-        Thread.sleep(60 * 1000);
+        Thread.sleep(60 * 60 * 1000);
         consumer.destroy();
     }
 }

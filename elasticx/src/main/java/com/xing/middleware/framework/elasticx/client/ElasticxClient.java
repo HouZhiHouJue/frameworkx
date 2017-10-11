@@ -24,7 +24,6 @@ import org.springframework.beans.factory.InitializingBean;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by Jecceca on 2017/8/28.
@@ -35,13 +34,13 @@ public class ElasticxClient implements InitializingBean, DisposableBean {
     protected QueryRunner queryRunner;
     protected static SerializeConfig serializeConfig = new SerializeConfig();
     protected static final String DEFAULT_TYPE = "default";
-    protected static final String FAST_JSON_ES_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    protected static final String FAST_JSON_ES_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
     protected TransportClient client;
     protected String[] servers;
     protected ServiceCluster serviceCluster;
 
     static {
-        JSON.defaultTimeZone = TimeZone.getTimeZone("UTC");
+//        JSON.defaultTimeZone = TimeZone.getTimeZone("UTC");
         serializeConfig.put(Date.class, new SimpleDateFormatSerializer(FAST_JSON_ES_DATE_FORMAT));
     }
 
