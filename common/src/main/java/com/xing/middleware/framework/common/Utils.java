@@ -5,7 +5,6 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Created by Jecceca on 2017/8/28.
@@ -15,7 +14,7 @@ public class Utils {
 
     static {
         simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     public static boolean isNullOrEmpty(String str) {
