@@ -30,7 +30,7 @@ public class FafstdfsxClientTest extends TestCase {
         fdfsFileInfo.setMetadata(nameValuePairs);
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 10, 10, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<Runnable>());
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             threadPoolExecutor.execute(new Runnable() {
                 @Override
                 public void run() {

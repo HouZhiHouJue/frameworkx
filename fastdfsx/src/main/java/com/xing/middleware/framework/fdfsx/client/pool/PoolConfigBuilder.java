@@ -15,10 +15,10 @@ public class PoolConfigBuilder {
         poolConfig.setMaxWaitMillis(3000);
         poolConfig.setSoftMinEvictableIdleTimeMillis(5 * 60);
         poolConfig.setNumTestsPerEvictionRun(2);
-        poolConfig.setTestOnBorrow(false);
-        poolConfig.setTestOnReturn(true);
+        poolConfig.setTestOnBorrow(true);
+        poolConfig.setTestOnReturn(false);
         poolConfig.setTestWhileIdle(true);
-        poolConfig.setTimeBetweenEvictionRunsMillis(30 * 1000);
+        poolConfig.setTimeBetweenEvictionRunsMillis(15 * 1000);
         return poolConfig;
     }
 }
