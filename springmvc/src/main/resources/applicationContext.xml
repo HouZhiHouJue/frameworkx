@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="propertyConfigure" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
@@ -15,41 +16,62 @@
         </property>
     </bean>
 
-    <bean id="elasticxClient" class="com.xing.middleware.framework.elasticx.client.ElasticxClient">
-        <constructor-arg name="servers">
-            <value>${elastic.servers}</value>
+    <!--<bean id="elasticxClient" class="com.xing.middleware.framework.elasticx.client.ElasticxClient">-->
+    <!--<constructor-arg name="servers">-->
+    <!--<value>${elastic.servers}</value>-->
+    <!--</constructor-arg>-->
+    <!--<constructor-arg name="druidDataSource" ref="dataSource"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="fdfsxClient" class="com.xing.middleware.framework.fdfsx.client.FdfsxClient">-->
+    <!--<constructor-arg name="propsFilePath">-->
+    <!--<value>${fdfs.propsFilePath}</value>-->
+    <!--</constructor-arg>-->
+    <!--<constructor-arg name="maxRetry">-->
+    <!--<value>${fdfs.maxRetry}</value>-->
+    <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <!--<bean id="producer" class="com.xing.middleware.framework.rocketx.client.Producer">-->
+    <!--<constructor-arg name="producerGroup">-->
+    <!--<value>${app.systemAlias}</value>-->
+    <!--</constructor-arg>-->
+    <!--<constructor-arg name="namesrvAddr">-->
+    <!--<value>${rocketmq.namesrv}</value>-->
+    <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <!--<bean id="consumer1" class="com.xing.middleware.framework.rocketx.client.Consumer">-->
+    <!--<constructor-arg name="consumerGroup">-->
+    <!--<value>${app.systemAlias}</value>-->
+    <!--</constructor-arg>-->
+    <!--<constructor-arg name="namesrvAddr">-->
+    <!--<value>${rocketmq.namesrv}</value>-->
+    <!--</constructor-arg>-->
+    <!--<constructor-arg name="messageListener" ref="messageListenerOrderlyHandler"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="messageListenerOrderlyHandler" class="com.xing.demo.bo.MessageListenerOrderlyHandler">-->
+    <!--</bean>-->
+
+
+    <bean class="com.xing.middleware.framework.elasticjobx.SimpleJobSchuduler">
+        <constructor-arg>
+            <list>
+                <ref bean="myjob"/>
+                <ref bean="myjob2"/>
+            </list>
         </constructor-arg>
-        <constructor-arg name="druidDataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="fdfsxClient" class="com.xing.middleware.framework.fdfsx.client.FdfsxClient">
-        <constructor-arg name="propsFilePath">
-            <value>${fdfs.propsFilePath}</value>
-        </constructor-arg>
-        <constructor-arg name="maxRetry">
-            <value>${fdfs.maxRetry}</value>
-        </constructor-arg>
+    <bean id="myjob" class="com.xing.middleware.framework.elasticjobx.SimpleJobInfo">
+        <constructor-arg name="jobName" value="myjob"/>
+        <constructor-arg name="jobClass" value="com.xing.demo.bo.MyJob"/>
+        <constructor-arg name="cron" value="0/5 * * * * ?"/>
     </bean>
-
-    <bean id="producer" class="com.xing.middleware.framework.rocketx.client.Producer">
-        <constructor-arg name="producerGroup">
-            <value>${app.systemAlias}</value>
-        </constructor-arg>
-        <constructor-arg name="namesrvAddr">
-            <value>${rocketmq.namesrv}</value>
-        </constructor-arg>
-    </bean>
-
-    <bean id="consumer1" class="com.xing.middleware.framework.rocketx.client.Consumer">
-        <constructor-arg name="consumerGroup">
-            <value>${app.systemAlias}</value>
-        </constructor-arg>
-        <constructor-arg name="namesrvAddr">
-            <value>${rocketmq.namesrv}</value>
-        </constructor-arg>
-        <constructor-arg name="messageListener" ref="messageListenerOrderlyHandler"/>
-    </bean>
-
-    <bean id="messageListenerOrderlyHandler" class="com.xing.demo.bo.MessageListenerOrderlyHandler">
+    <bean id="myjob2" class="com.xing.middleware.framework.elasticjobx.SimpleJobInfo">
+        <constructor-arg name="jobName" value="myjob2"/>
+        <constructor-arg name="jobClass" value="com.xing.demo.bo.MyJob2"/>
+        <constructor-arg name="cron" value="0/5 * * * * ?"/>
     </bean>
 </beans>

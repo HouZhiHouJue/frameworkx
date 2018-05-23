@@ -23,9 +23,17 @@
             <artifactId>rocketx</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.xing.middleware</groupId>
+            <artifactId>elasticjobx</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ctrip.framework.apollo</groupId>
+            <artifactId>apollo-client</artifactId>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

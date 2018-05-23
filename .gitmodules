@@ -1,0 +1,6 @@
+[submodule "fastdfs-client-java"]
+	path = fastdfs-client-java
+	url = https://github.com/happyfish100/fastdfs-client-java.git
+[submodule "elasticsearch-sql"]
+	path = elasticsearch-sql
+	url = https://github.com/HouZhiHouJue/elasticsearch-sql.git

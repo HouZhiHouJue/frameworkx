@@ -5,7 +5,7 @@ import com.alibaba.druid.pool.ElasticSearchDruidDataSourceFactory;
 import com.alibaba.fastjson.TypeReference;
 
 import com.xing.middleware.framework.elasticx.client.model.Person;
-import com.xing.middleware.framework.elasticx.client.model.PersonVO;
+//import com.xing.middleware.framework.elasticx.client.model.PersonVO;
 import com.xing.middleware.framework.elasticx.client.model.QueryListResult;
 import junit.framework.TestCase;
 import org.junit.Assert;
@@ -48,7 +48,7 @@ public class ElasticxClientTest extends TestCase {
 //
 //        List<VehicleStatisticsPojo> demoBeanList = elasticxClient.query(groupSql, VehicleStatisticsPojo.class);
         String groupSql2 = "SELECT count(age) FROM cu-test-2017.10.11 group by birthDay";
-        List<PersonVO> personVOList = elasticxClient.query(groupSql2, PersonVO.class);
+//        List<PersonVO> personVOList = elasticxClient.query(groupSql2, PersonVO.class);
 //        Assert.assertNotNull(demoBeanList);
         elasticxClient.destroy();
     }
