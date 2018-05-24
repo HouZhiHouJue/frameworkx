@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.haoyunhu.com/schema/framework/job"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:beans="http://www.springframework.org/schema/beans"
+            targetNamespace="http://www.haoyunhu.com/schema/framework/job"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+    <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+
+
+    <xsd:complexType name="base">
+        <xsd:complexContent>
+            <xsd:extension base="beans:identifiedType">
+                <xsd:attribute name="job-ref" type="xsd:string" use="required"/>
+                <xsd:attribute name="cron" type="xsd:string" use="required"/>
+                <xsd:attribute name="sharding-total-count" type="xsd:int" default="1"/>
+                <xsd:attribute name="sharding-item-parameters" type="xsd:string" default="0=default"/>
+                <xsd:attribute name="job-parameter" type="xsd:string"/>
+                <xsd:attribute name="monitor-execution" type="xsd:boolean" default="false"/>
+                <xsd:attribute name="failover" type="xsd:boolean" default="false"/>
+                <xsd:attribute name="misfire" type="xsd:string" default="true"/>
+                <xsd:attribute name="description" type="xsd:string"/>
+                <xsd:attribute name="disabled" type="xsd:boolean" default="false"/>
+                <xsd:attribute name="parallel" type="xsd:boolean" default="false"/>
+                <xsd:attribute name="overwrite" type="xsd:boolean" default="true"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="simple">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="base"/>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

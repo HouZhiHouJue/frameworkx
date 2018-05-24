@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:job="http://www.haoyunhu.com/schema/framework/job"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd">
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.haoyunhu.com/schema/framework/job
+                           http://www.haoyunhu.com/schema/framework/job/job.xsd ">
     <bean id="propertyConfigure" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
@@ -15,6 +19,12 @@
             </list>
         </property>
     </bean>
+
+    <bean id="myjob" class="com.xing.demo.bo.MyJob"/>
+    <bean id="myjob2" class="com.xing.demo.bo.MyJob2"/>
+
+    <job:simple id="job1" cron="0/5 * * * * ?" job-ref="myjob" disabled="false"/>
+    <job:simple id="job2" cron="0/5 * * * * ?" job-ref="myjob2"/>
 
     <!--<bean id="elasticxClient" class="com.xing.middleware.framework.elasticx.client.ElasticxClient">-->
     <!--<constructor-arg name="servers">-->
@@ -55,23 +65,5 @@
     <!--</bean>-->
 
 
-    <bean class="com.xing.middleware.framework.elasticjobx.SimpleJobSchuduler">
-        <constructor-arg>
-            <list>
-                <ref bean="myjob"/>
-                <ref bean="myjob2"/>
-            </list>
-        </constructor-arg>
-    </bean>
 
-    <bean id="myjob" class="com.xing.middleware.framework.elasticjobx.SimpleJobInfo">
-        <constructor-arg name="jobName" value="myjob"/>
-        <constructor-arg name="jobClass" value="com.xing.demo.bo.MyJob"/>
-        <constructor-arg name="cron" value="0/5 * * * * ?"/>
-    </bean>
-    <bean id="myjob2" class="com.xing.middleware.framework.elasticjobx.SimpleJobInfo">
-        <constructor-arg name="jobName" value="myjob2"/>
-        <constructor-arg name="jobClass" value="com.xing.demo.bo.MyJob2"/>
-        <constructor-arg name="cron" value="0/5 * * * * ?"/>
-    </bean>
 </beans>

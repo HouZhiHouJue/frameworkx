@@ -1,15 +1,16 @@
 package com.xing.demo.bo;
 
-import com.dangdang.ddframe.job.api.ShardingContext;
-import com.dangdang.ddframe.job.api.simple.SimpleJob;
+import com.haoyunhu.framework.elasticjob.JobContext;
+import com.haoyunhu.framework.elasticjob.SimpleJobExcutor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MyJob implements SimpleJob {
+public class MyJob extends SimpleJobExcutor {
+
     @Override
-    public void execute(ShardingContext shardingContext) {
+    public void run(JobContext jobContext) {
         System.out.println(String.format("Item: %s | Time: %s | Thread: %s | %s",
-                shardingContext.getShardingItem(), new SimpleDateFormat("HH:mm:ss").format(new Date()), Thread.currentThread().getId(), "SIMPLE"));
+                jobContext.getShardingItem(), new SimpleDateFormat("HH:mm:ss").format(new Date()), Thread.currentThread().getId(), "SIMPLE"));
     }
 }

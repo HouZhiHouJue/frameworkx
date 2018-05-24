@@ -1,5 +1,6 @@
-package com.xing.middleware.framework.elasticjobx;
+package com.haoyunhu.framework.elasticjob;
 
+import com.dangdang.ddframe.job.api.ElasticJob;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,5 @@ public class SimpleJobInfo {
 
     private int shardingCount = 1;
 
-    private String shardingParameters = "0=default";
+    private String shardingItemParameters = "0=default";
 }
