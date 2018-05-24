@@ -1,9 +1,8 @@
-package com.haoyunhu.framework.elasticjob.spring.job;
+package com.luckytiger.framework.elasticjob.spring.job;
 
-import com.google.common.base.Strings;
-import com.haoyunhu.framework.elasticjob.SimpleJobInfo;
-import com.haoyunhu.framework.elasticjob.internals.JobRegistry;
-import com.haoyunhu.framework.elasticjob.internals.cst.JobConst;
+import com.luckytiger.framework.elasticjob.SimpleJobInfo;
+import com.luckytiger.framework.elasticjob.internals.JobRegistry;
+import com.luckytiger.framework.elasticjob.internals.cst.JobConst;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;

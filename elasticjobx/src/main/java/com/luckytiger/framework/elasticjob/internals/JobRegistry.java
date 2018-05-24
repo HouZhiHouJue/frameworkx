@@ -1,4 +1,4 @@
-package com.haoyunhu.framework.elasticjob.internals;
+package com.luckytiger.framework.elasticjob.internals;
 
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.ConfigService;
@@ -9,9 +9,9 @@ import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
 import com.dangdang.ddframe.job.reg.base.CoordinatorRegistryCenter;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperConfiguration;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
-import com.haoyunhu.framework.elasticjob.SimpleJobInfo;
-import com.haoyunhu.framework.elasticjob.internals.cst.ConfigConst;
-import com.haoyunhu.framework.elasticjob.internals.cst.RegistryConst;
+import com.luckytiger.framework.elasticjob.SimpleJobInfo;
+import com.luckytiger.framework.elasticjob.internals.cst.ConfigConst;
+import com.luckytiger.framework.elasticjob.internals.cst.RegistryConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;

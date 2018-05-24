@@ -1,4 +1,4 @@
-package com.haoyunhu.framework.elasticjob.spring;
+package com.luckytiger.framework.elasticjob.spring;
 
 
 import org.springframework.beans.factory.config.BeanDefinition;

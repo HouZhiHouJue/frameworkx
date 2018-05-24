@@ -2,11 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:job="http://www.haoyunhu.com/schema/framework/job"
+       xmlns:job="http://www.luckytiger.com/schema/framework/job"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
-                           http://www.haoyunhu.com/schema/framework/job
-                           http://www.haoyunhu.com/schema/framework/job/job.xsd ">
+                           http://www.luckytiger.com/schema/framework/job
+                           http://www.luckytiger.com/schema/framework/job/job.xsd ">
     <bean id="propertyConfigure" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>

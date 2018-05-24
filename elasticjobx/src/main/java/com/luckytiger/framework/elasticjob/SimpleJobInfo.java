@@ -1,4 +1,4 @@
-package com.haoyunhu.framework.elasticjob;
+package com.luckytiger.framework.elasticjob;
 
 import com.dangdang.ddframe.job.api.ElasticJob;
 import lombok.Getter;

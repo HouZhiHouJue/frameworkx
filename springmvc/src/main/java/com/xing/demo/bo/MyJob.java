@@ -1,7 +1,7 @@
 package com.xing.demo.bo;
 
-import com.haoyunhu.framework.elasticjob.JobContext;
-import com.haoyunhu.framework.elasticjob.SimpleJobExcutor;
+import com.luckytiger.framework.elasticjob.JobContext;
+import com.luckytiger.framework.elasticjob.SimpleJobExcutor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

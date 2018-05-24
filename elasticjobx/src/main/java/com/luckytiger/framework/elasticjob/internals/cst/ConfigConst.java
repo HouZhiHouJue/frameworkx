@@ -1,4 +1,4 @@
-package com.haoyunhu.framework.elasticjob.internals.cst;
+package com.luckytiger.framework.elasticjob.internals.cst;
 
 public class ConfigConst {
 

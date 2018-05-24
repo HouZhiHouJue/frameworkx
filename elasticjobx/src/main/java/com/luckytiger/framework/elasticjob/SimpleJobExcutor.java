@@ -1,9 +1,9 @@
-package com.haoyunhu.framework.elasticjob;
+package com.luckytiger.framework.elasticjob;
 
 import com.alibaba.fastjson.JSON;
 import com.dangdang.ddframe.job.api.ShardingContext;
 import com.dangdang.ddframe.job.api.simple.SimpleJob;
-import com.haoyunhu.framework.elasticjob.internals.JobRegistry;
+import com.luckytiger.framework.elasticjob.internals.JobRegistry;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.atomic.AtomicBoolean;

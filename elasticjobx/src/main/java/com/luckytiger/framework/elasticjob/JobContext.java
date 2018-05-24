@@ -1,4 +1,4 @@
-package com.haoyunhu.framework.elasticjob;
+package com.luckytiger.framework.elasticjob;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

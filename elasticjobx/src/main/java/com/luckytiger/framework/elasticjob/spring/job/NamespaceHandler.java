@@ -1,4 +1,4 @@
-package com.haoyunhu.framework.elasticjob.spring.job;
+package com.luckytiger.framework.elasticjob.spring.job;
 
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
