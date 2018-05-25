@@ -20,10 +20,14 @@
         </property>
     </bean>
 
+
+
+
     <bean id="myjob" class="com.xing.demo.bo.MyJob"/>
     <bean id="myjob2" class="com.xing.demo.bo.MyJob2"/>
 
-    <job:simple id="job1" cron="0/5 * * * * ?" job-ref="myjob" disabled="false"/>
+
+    <job:simple id="job1" cron="0/5 * * * * ?" job-ref="myjob"/>
     <job:simple id="job2" cron="0/5 * * * * ?" job-ref="myjob2"/>
 
     <!--<bean id="elasticxClient" class="com.xing.middleware.framework.elasticx.client.ElasticxClient">-->
@@ -63,7 +67,6 @@
 
     <!--<bean id="messageListenerOrderlyHandler" class="com.xing.demo.bo.MessageListenerOrderlyHandler">-->
     <!--</bean>-->
-
 
 
 </beans>

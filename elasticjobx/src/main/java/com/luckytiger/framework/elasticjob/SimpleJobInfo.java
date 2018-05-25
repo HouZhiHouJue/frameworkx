@@ -13,7 +13,7 @@ public class SimpleJobInfo {
     @NonNull
     private String jobName;
     @NonNull
-    private String jobClass;
+    private String jobBeanName;
     @NonNull
     private String cron;
 
@@ -36,4 +36,8 @@ public class SimpleJobInfo {
     private int shardingCount = 1;
 
     private String shardingItemParameters = "0=default";
+
+    private String jobClass;
+
+    private ElasticJob elasticJob;
 }

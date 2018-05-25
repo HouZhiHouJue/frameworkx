@@ -3,7 +3,7 @@ package com.luckytiger.framework.elasticjob;
 import com.alibaba.fastjson.JSON;
 import com.dangdang.ddframe.job.api.ShardingContext;
 import com.dangdang.ddframe.job.api.simple.SimpleJob;
-import com.luckytiger.framework.elasticjob.internals.JobRegistry;
+import com.luckytiger.framework.elasticjob.internals.JobSchedulers;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -17,7 +17,7 @@ public abstract class SimpleJobExcutor implements SimpleJob {
 
     @Override
     public final void execute(ShardingContext shardingContext) {
-        SimpleJobInfo simpleJobInfo = JobRegistry.get(shardingContext.getJobName());
+        SimpleJobInfo simpleJobInfo = JobSchedulers.get(shardingContext.getJobName());
         if (simpleJobInfo.isParallel() || !isRunning.get()) {
             excuteImpl(shardingContext);
         } else {

@@ -2,6 +2,7 @@ package com.luckytiger.framework.elasticjob.internals;
 
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.ConfigService;
+import com.dangdang.ddframe.job.api.ElasticJob;
 import com.dangdang.ddframe.job.config.JobCoreConfiguration;
 import com.dangdang.ddframe.job.config.simple.SimpleJobConfiguration;
 import com.dangdang.ddframe.job.lite.api.JobScheduler;
@@ -13,19 +14,33 @@ import com.luckytiger.framework.elasticjob.SimpleJobInfo;
 import com.luckytiger.framework.elasticjob.internals.cst.ConfigConst;
 import com.luckytiger.framework.elasticjob.internals.cst.RegistryConst;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
 
 @Slf4j
-public class JobRegistry implements DisposableBean, InitializingBean {
-    private CoordinatorRegistryCenter regCenter;
+public class JobSchedulers implements DisposableBean, InitializingBean, ApplicationContextAware {
+    private static CoordinatorRegistryCenter regCenter;
     private static final HashMap<String, SimpleJobInfo> jobConfigurations = new HashMap<>();
+
+    private ApplicationContext applicationContext;
     private final HashMap<String, JobScheduler> jobSchedulers = new HashMap<>();
 
+    static {
+        Config config = ConfigService.getConfig(ConfigConst.ELASTICJOB_PUBLIC_NAMESPACE);
+        String value = config.getProperty(ConfigConst.ELASTICJOB_REGISTRY_ADDR_KEY, RegistryConst.ELASTICJOB_REGISTRY_DEFAUTL_ADDR);
+        ZookeeperConfiguration zkConfig = new ZookeeperConfiguration(value, RegistryConst.DEFAULT_JOB_NAMESPANCE);
+        regCenter = new ZookeeperRegistryCenter(zkConfig);
+        regCenter.init();
+    }
 
     public static void register(SimpleJobInfo simpleJobInfo) {
         jobConfigurations.put(simpleJobInfo.getJobName(), simpleJobInfo);
@@ -50,12 +65,6 @@ public class JobRegistry implements DisposableBean, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Config config = ConfigService.getConfig(ConfigConst.ELASTICJOB_PUBLIC_NAMESPACE);
-        String value = config.getProperty(ConfigConst.ELASTICJOB_REGISTRY_ADDR_KEY, RegistryConst.ELASTICJOB_REGISTRY_DEFAUTL_ADDR);
-        ZookeeperConfiguration zkConfig = new ZookeeperConfiguration(value, RegistryConst.DEFAULT_JOB_NAMESPANCE);
-        regCenter = new ZookeeperRegistryCenter(zkConfig);
-        regCenter.init();
-
         for (Map.Entry<String, SimpleJobInfo> entry : jobConfigurations.entrySet()) {
             SimpleJobInfo simpleJobInfo = entry.getValue();
             if (!org.quartz.CronExpression.isValidExpression(simpleJobInfo.getCron())) {
@@ -69,9 +78,15 @@ public class JobRegistry implements DisposableBean, InitializingBean {
             SimpleJobConfiguration simpleJobConfig = new SimpleJobConfiguration(coreConfig, simpleJobInfo.getJobClass());
             LiteJobConfiguration liteJobConfiguration = LiteJobConfiguration.newBuilder(simpleJobConfig)
                     .disabled(simpleJobInfo.isDisabled()).overwrite(simpleJobInfo.isOverride()).monitorExecution(simpleJobInfo.isMonitorExcution()).build();
-            JobScheduler jobScheduler = new JobScheduler(regCenter, liteJobConfiguration);
+            ElasticJob elasticJob = (ElasticJob) applicationContext.getBean(simpleJobInfo.getJobBeanName());
+            SpringJobScheduler jobScheduler = new SpringJobScheduler(elasticJob, regCenter, liteJobConfiguration);
             jobScheduler.init();
             jobSchedulers.put(simpleJobInfo.getJobName(), jobScheduler);
         }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }
