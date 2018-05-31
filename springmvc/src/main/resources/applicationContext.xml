@@ -20,9 +20,6 @@
         </property>
     </bean>
 
-
-
-
     <bean id="myjob" class="com.xing.demo.bo.MyJob"/>
     <bean id="myjob2" class="com.xing.demo.bo.MyJob2"/>
 

@@ -2,6 +2,7 @@ package com.luckytiger.framework.elasticjob.internals;
 
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.ConfigService;
+import com.ctrip.framework.foundation.Foundation;
 import com.dangdang.ddframe.job.api.ElasticJob;
 import com.dangdang.ddframe.job.config.JobCoreConfiguration;
 import com.dangdang.ddframe.job.config.simple.SimpleJobConfiguration;
@@ -37,7 +38,7 @@ public class JobSchedulers implements DisposableBean, InitializingBean, Applicat
     static {
         Config config = ConfigService.getConfig(ConfigConst.ELASTICJOB_PUBLIC_NAMESPACE);
         String value = config.getProperty(ConfigConst.ELASTICJOB_REGISTRY_ADDR_KEY, RegistryConst.ELASTICJOB_REGISTRY_DEFAUTL_ADDR);
-        ZookeeperConfiguration zkConfig = new ZookeeperConfiguration(value, RegistryConst.DEFAULT_JOB_NAMESPANCE);
+        ZookeeperConfiguration zkConfig = new ZookeeperConfiguration(value, Foundation.server().getEnvType());
         regCenter = new ZookeeperRegistryCenter(zkConfig);
         regCenter.init();
     }

@@ -1,5 +1,6 @@
 package com.luckytiger.framework.elasticjob.spring.job;
 
+import com.ctrip.framework.foundation.Foundation;
 import com.luckytiger.framework.elasticjob.SimpleJobInfo;
 import com.luckytiger.framework.elasticjob.internals.JobProcessor;
 import com.luckytiger.framework.elasticjob.internals.JobSchedulers;
@@ -23,7 +24,7 @@ public class SimpleJobParser extends AbstractSingleBeanDefinitionParser {
 
     @Override
     protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder builder) {
-        String jobName = element.getAttribute(ID_ATTRIBUTE);
+        String jobName = Foundation.app().getAppId() + "." + element.getAttribute(ID_ATTRIBUTE);
         String jobBeanName = element.getAttribute(JobConst.JOB_REF_ATTRIBUTE);
         String cron = element.getAttribute(JobConst.CRON_ATTRIBUTE);
         SimpleJobInfo simpleJobInfo = new SimpleJobInfo(jobName, jobBeanName, cron);
@@ -41,6 +42,4 @@ public class SimpleJobParser extends AbstractSingleBeanDefinitionParser {
         simpleJobInfo.setOverride(Boolean.parseBoolean(element.getAttribute(JobConst.OVERWRITE_ATTRIBUTE)));
         JobSchedulers.register(simpleJobInfo);
     }
-
-
 }
