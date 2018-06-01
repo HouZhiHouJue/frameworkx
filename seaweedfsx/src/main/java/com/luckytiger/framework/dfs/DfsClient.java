@@ -12,5 +12,9 @@ public interface DfsClient {
 
     UploadResult upload(FileInfo fileInfo, int requestTimeout, int maxRetry) throws ExecutionException, InterruptedException, HttpException;
 
-    byte[] get(String fid) throws ExecutionException, InterruptedException, HttpException;
+    DownloadResult download(String fid) throws ExecutionException, InterruptedException, HttpException;
+
+    DownloadResult download(String fid, int requestTimeout) throws ExecutionException, InterruptedException, HttpException;
+
+    DownloadResult download(String fid, int requestTimeout, int maxRetry) throws ExecutionException, InterruptedException, HttpException;
 }

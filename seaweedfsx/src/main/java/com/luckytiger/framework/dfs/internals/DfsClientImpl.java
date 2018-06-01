@@ -5,6 +5,7 @@ import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.ConfigService;
 import com.google.common.base.Preconditions;
 import com.luckytiger.framework.dfs.DfsClient;
+import com.luckytiger.framework.dfs.DownloadResult;
 import com.luckytiger.framework.dfs.FileInfo;
 import com.luckytiger.framework.dfs.UploadResult;
 import com.luckytiger.framework.dfs.internals.Exception.HttpException;
@@ -103,13 +104,29 @@ public class DfsClientImpl implements InitializingBean, DisposableBean, DfsClien
     }
 
     @Override
-    public byte[] get(String fid) throws ExecutionException, InterruptedException, HttpException {
-        String url = String.format("http://%s/%s", dfsConfig.getVolumnAddr(), fid);
-        Request request = new RequestBuilder("GET")
-                .setUrl(url)
-                .build();
-        Response response = asyncHttpClient.executeRequest(request).get();
-        Utility.raiseForStatus(response);
-        return response.getResponseBodyAsBytes();
+    public DownloadResult download(String fid) throws ExecutionException, InterruptedException, HttpException {
+        return download(fid, dfsConfig.getRequestTimeout(), dfsConfig.getMaxRetry());
+    }
+
+    @Override
+    public DownloadResult download(String fid, int requestTimeout) throws ExecutionException, InterruptedException, HttpException {
+        return download(fid, requestTimeout, dfsConfig.getMaxRetry());
+    }
+
+    @Override
+    public DownloadResult download(String fid, int requestTimeout, int maxRetry) throws ExecutionException, InterruptedException, HttpException {
+        DownloadResult downloadResult = new DownloadResult();
+        for (int i = 0; i < maxRetry + 1; i++) {
+            String url = String.format("http://%s/%s", dfsConfig.getVolumnAddr(), fid);
+            Request request = new RequestBuilder("GET")
+                    .setUrl(url)
+                    .setRequestTimeout(requestTimeout)
+                    .build();
+            Response response = asyncHttpClient.executeRequest(request).get();
+            Utility.raiseForStatus(response);
+            byte[] bytes = response.getResponseBodyAsBytes();
+            return downloadResult;
+        }
+        return downloadResult;
     }
 }
