@@ -83,7 +83,7 @@ public class DfsClientImpl implements InitializingBean, DisposableBean, DfsClien
             Response response = asyncHttpClient.executeRequest(request).get();
             Utility.raiseForStatus(response);
             FileAssign fileAssign = JSON.parseObject(response.getResponseBody(), FileAssign.class);
-            url = "http://" + fileAssign.getUrl() + "/" + fileAssign.getFid();
+            url = String.format("http://%s/%s", fileAssign.getUrl(), fileAssign.getFid());
             if (!dfsConfig.getFileTtl().equals("-1")) {
                 url = String.format("%s?ttl=%s", url, dfsConfig.getFileTtl());
             }
