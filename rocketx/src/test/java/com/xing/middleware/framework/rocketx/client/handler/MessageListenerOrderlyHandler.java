@@ -1,13 +1,12 @@
 package com.xing.middleware.framework.rocketx.client.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.rocketmq.client.consumer.listener.ConsumeOrderlyContext;
-import com.alibaba.rocketmq.client.consumer.listener.ConsumeOrderlyStatus;
-import com.alibaba.rocketmq.client.consumer.listener.MessageListenerOrderly;
-import com.alibaba.rocketmq.common.message.MessageExt;
-
 import com.xing.middleware.framework.rocketx.client.TopicHandler;
 import com.xing.middleware.framework.rocketx.client.model.Order;
+import org.apache.rocketmq.client.consumer.listener.ConsumeOrderlyContext;
+import org.apache.rocketmq.client.consumer.listener.ConsumeOrderlyStatus;
+import org.apache.rocketmq.client.consumer.listener.MessageListenerOrderly;
+import org.apache.rocketmq.common.message.MessageExt;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;

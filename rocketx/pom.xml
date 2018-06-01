@@ -9,7 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>rocketx</artifactId>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
@@ -29,5 +28,4 @@
             <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
-
 </project>

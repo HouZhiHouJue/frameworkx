@@ -1,11 +1,5 @@
 package com.xing.demo.controller;
 
-import com.alibaba.fastjson.TypeReference;
-import com.alibaba.rocketmq.client.exception.MQBrokerException;
-import com.alibaba.rocketmq.client.exception.MQClientException;
-import com.alibaba.rocketmq.client.producer.SendResult;
-import com.alibaba.rocketmq.client.producer.SendStatus;
-import com.alibaba.rocketmq.remoting.exception.RemotingException;
 
 import com.google.common.io.Files;
 import com.luckytiger.framework.dfs.DfsClient;
@@ -52,11 +46,7 @@ public class DemoController {
         File file = new File("f:/1.zip");
         FileInfo fileInfo = new FileInfo(file.getName(), Files.toByteArray(file));
         com.luckytiger.framework.dfs.UploadResult uploadResult = dfsClient.upload(fileInfo);
-        byte[] bytes = dfsClient.get(uploadResult.getFid());
-        File file2 = new File("f:/2.zip");
-        Files.touch(file2);
-        Files.write(bytes, file2);
-        return "Hello Elasticsearch";
+        return uploadResult.getFid();
     }
 
 

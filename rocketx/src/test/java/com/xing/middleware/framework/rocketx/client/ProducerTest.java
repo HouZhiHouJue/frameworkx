@@ -1,10 +1,11 @@
 package com.xing.middleware.framework.rocketx.client;
 
-import com.alibaba.rocketmq.client.producer.SendResult;
-import com.alibaba.rocketmq.client.producer.SendStatus;
+
 
 import com.xing.middleware.framework.rocketx.client.model.Order;
 import junit.framework.TestCase;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.junit.Assert;
 
 /**
