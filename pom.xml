@@ -75,9 +75,9 @@
                 <version>1.2.37</version>
             </dependency>
             <dependency>
-                <groupId>com.alibaba.rocketmq</groupId>
+                <groupId>org.apache.rocketmq</groupId>
                 <artifactId>rocketmq-client</artifactId>
-                <version>3.5.8</version>
+                <version>4.2.0</version>
             </dependency>
 
             <dependency>

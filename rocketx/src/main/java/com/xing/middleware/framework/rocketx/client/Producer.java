@@ -1,15 +1,16 @@
 package com.xing.middleware.framework.rocketx.client;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.rocketmq.client.exception.MQBrokerException;
-import com.alibaba.rocketmq.client.exception.MQClientException;
-import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
-import com.alibaba.rocketmq.client.producer.MessageQueueSelector;
-import com.alibaba.rocketmq.client.producer.SendCallback;
-import com.alibaba.rocketmq.client.producer.SendResult;
-import com.alibaba.rocketmq.common.message.Message;
-import com.alibaba.rocketmq.remoting.common.RemotingHelper;
-import com.alibaba.rocketmq.remoting.exception.RemotingException;
+
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.MessageQueueSelector;
+import org.apache.rocketmq.client.producer.SendCallback;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.common.RemotingHelper;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -29,9 +30,8 @@ public class Producer implements InitializingBean, DisposableBean {
     }
 
     public Producer(String producerGroup, String namesrvAddr, MessageQueueSelector messageQueueSelector) {
-        this(producerGroup, namesrvAddr, 2, 4, messageQueueSelector);
+        this(producerGroup, namesrvAddr, 1, 2, messageQueueSelector);
     }
-
 
     public Producer(String producerGroup, String namesrvAddr, int retryTimes,
                     int defaultTopicQueueNums, MessageQueueSelector messageQueueSelector) {
