@@ -49,9 +49,13 @@ public class DemoController {
     public
     @ResponseBody
     String es() throws Exception {
-        File file = new File("f:/1.txt");
+        File file = new File("f:/1.zip");
         FileInfo fileInfo = new FileInfo(file.getName(), Files.toByteArray(file));
         com.luckytiger.framework.dfs.UploadResult uploadResult = dfsClient.upload(fileInfo);
+        byte[] bytes = dfsClient.get(uploadResult.getFid());
+        File file2 = new File("f:/2.zip");
+        Files.touch(file2);
+        Files.write(bytes, file2);
         return "Hello Elasticsearch";
     }
 

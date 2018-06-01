@@ -17,6 +17,7 @@ public class DfsConfig {
     private int maxConnectionsPerHost = 20;
     private int connectionTtl = 45 * 1000;
     private int maxRetry = 1;
-    private String serverAddr;
+    private String masterAddr;
+    private String volumnAddr;
     private String fileTtl;
 }

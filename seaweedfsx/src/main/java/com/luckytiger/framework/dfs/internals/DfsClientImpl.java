@@ -70,7 +70,7 @@ public class DfsClientImpl implements InitializingBean, DisposableBean, DfsClien
         Preconditions.checkNotNull(fileInfo.getBytes());
         Preconditions.checkArgument(fileInfo.getBytes().length > 0);
         UploadResult uploadResult = new UploadResult();
-        String url = String.format(ConfigConst.MASTER_URL, dfsConfig.getServerAddr());
+        String url = String.format(ConfigConst.MASTER_URL, dfsConfig.getMasterAddr());
         if (!dfsConfig.getFileTtl().equals("-1")) {
             url = String.format("%s?ttl=%s", url, dfsConfig.getFileTtl());
         }
@@ -100,5 +100,16 @@ public class DfsClientImpl implements InitializingBean, DisposableBean, DfsClien
             return uploadResult;
         }
         return uploadResult;
+    }
+
+    @Override
+    public byte[] get(String fid) throws ExecutionException, InterruptedException, HttpException {
+        String url = String.format("http://%s/%s", dfsConfig.getVolumnAddr(), fid);
+        Request request = new RequestBuilder("GET")
+                .setUrl(url)
+                .build();
+        Response response = asyncHttpClient.executeRequest(request).get();
+        Utility.raiseForStatus(response);
+        return response.getResponseBodyAsBytes();
     }
 }
