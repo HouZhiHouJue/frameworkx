@@ -76,7 +76,9 @@ public class DfsClientImpl implements InitializingBean, DisposableBean, DfsClien
         }
         for (int i = 0; i < maxRetry + 1; i++) {
 
-            Request request = new RequestBuilder("GET").setRequestTimeout(requestTimeout).setUrl(url)
+            Request request = new RequestBuilder("GET")
+                    .setRequestTimeout(requestTimeout)
+                    .setUrl(url)
                     .build();
             Response response = asyncHttpClient.executeRequest(request).get();
             Utility.raiseForStatus(response);
@@ -89,7 +91,8 @@ public class DfsClientImpl implements InitializingBean, DisposableBean, DfsClien
             request = new RequestBuilder("POST")
                     .addHeader("Content-type", "multipart/form-data; charset=UTF-8")
                     .setRequestTimeout(requestTimeout).setUrl(url)
-                    .addBodyPart(byteArrayPart).build();
+                    .addBodyPart(byteArrayPart)
+                    .build();
             response = asyncHttpClient.executeRequest(request).get();
             Utility.raiseForStatus(response);
             uploadResult.setOK(true);
