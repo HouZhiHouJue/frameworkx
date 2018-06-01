@@ -8,6 +8,8 @@ import com.alibaba.rocketmq.client.producer.SendStatus;
 import com.alibaba.rocketmq.remoting.exception.RemotingException;
 
 import com.google.common.io.Files;
+import com.luckytiger.framework.dfs.DfsClient;
+import com.luckytiger.framework.dfs.FileInfo;
 import com.xing.demo.model.DemoBean;
 import com.xing.demo.model.Order;
 import com.xing.demo.model.Person;
@@ -24,8 +26,10 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,6 +41,21 @@ import java.util.List;
 @Controller
 @RequestMapping("/demo")
 public class DemoController {
+
+    @Autowired
+    private DfsClient dfsClient;
+
+    @RequestMapping(value = "/dfs", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String es() throws Exception {
+        File file = new File("f:/1.txt");
+        FileInfo fileInfo = new FileInfo(file.getName(), Files.toByteArray(file));
+        com.luckytiger.framework.dfs.UploadResult uploadResult = dfsClient.upload(fileInfo);
+        return "Hello Elasticsearch";
+    }
+
+
 //    @Autowired
 //    private ElasticxClient elasticxClient;
 //

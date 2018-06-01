@@ -27,6 +27,10 @@
             <artifactId>elasticjobx</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.xing.middleware</groupId>
+            <artifactId>seaweedfsx</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>compile</scope>

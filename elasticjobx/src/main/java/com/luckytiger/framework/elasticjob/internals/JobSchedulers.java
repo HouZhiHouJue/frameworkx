@@ -31,14 +31,15 @@ import java.util.Map;
 public class JobSchedulers implements DisposableBean, InitializingBean, ApplicationContextAware {
     private static CoordinatorRegistryCenter regCenter;
     private static final HashMap<String, SimpleJobInfo> jobConfigurations = new HashMap<>();
+    private static Config config;
 
     private ApplicationContext applicationContext;
     private final HashMap<String, JobScheduler> jobSchedulers = new HashMap<>();
 
     static {
-        Config config = ConfigService.getConfig(ConfigConst.ELASTICJOB_PUBLIC_NAMESPACE);
-        String value = config.getProperty(ConfigConst.ELASTICJOB_REGISTRY_ADDR_KEY, RegistryConst.ELASTICJOB_REGISTRY_DEFAUTL_ADDR);
-        ZookeeperConfiguration zkConfig = new ZookeeperConfiguration(value, Foundation.server().getEnvType());
+        config = ConfigService.getConfig(ConfigConst.ELASTICJOB_PUBLIC_NAMESPACE);
+        String registryAddr = config.getProperty(ConfigConst.ELASTICJOB_REGISTRY_ADDR_KEY, RegistryConst.ELASTICJOB_REGISTRY_DEFAUTL_ADDR);
+        ZookeeperConfiguration zkConfig = new ZookeeperConfiguration(registryAddr, Foundation.server().getEnvType().toLowerCase());
         regCenter = new ZookeeperRegistryCenter(zkConfig);
         regCenter.init();
     }

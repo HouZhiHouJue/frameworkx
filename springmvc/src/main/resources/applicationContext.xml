@@ -3,10 +3,13 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:job="http://www.luckytiger.com/schema/framework/job"
+       xmlns:dfs="http://www.luckytiger.com/schema/framework/dfs"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.luckytiger.com/schema/framework/job
-                           http://www.luckytiger.com/schema/framework/job/job.xsd ">
+                           http://www.luckytiger.com/schema/framework/job/job.xsd
+                           http://www.luckytiger.com/schema/framework/dfs
+                           http://www.luckytiger.com/schema/framework/dfs/dfs.xsd">
     <bean id="propertyConfigure" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
@@ -21,12 +24,13 @@
     </bean>
 
     <bean id="myjob" class="com.xing.demo.bo.MyJob"/>
-    <bean id="myjob2" class="com.xing.demo.bo.MyJob2"/>
+    <!--<bean id="myjob2" class="com.xing.demo.bo.MyJob2"/>-->
 
 
     <job:simple id="job1" cron="0/5 * * * * ?" job-ref="myjob"/>
-    <job:simple id="job2" cron="0/5 * * * * ?" job-ref="myjob2"/>
+    <!--<job:simple id="job2" cron="0/5 * * * * ?" job-ref="myjob2"/>-->
 
+    <dfs:client/>
     <!--<bean id="elasticxClient" class="com.xing.middleware.framework.elasticx.client.ElasticxClient">-->
     <!--<constructor-arg name="servers">-->
     <!--<value>${elastic.servers}</value>-->

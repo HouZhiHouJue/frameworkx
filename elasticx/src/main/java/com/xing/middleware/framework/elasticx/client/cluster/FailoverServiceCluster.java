@@ -1,8 +1,11 @@
 package com.xing.middleware.framework.elasticx.client.cluster;
 
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.AsyncHttpClientConfig;
+
 import com.xing.middleware.framework.common.Utils;
+import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.AsyncHttpClientConfig;
+
+import static org.asynchttpclient.Dsl.*;
 
 import java.util.Random;
 
@@ -19,17 +22,11 @@ public class FailoverServiceCluster implements ServiceCluster {
         this.reTry = maxRetry + 1;
         random = new Random(System.currentTimeMillis());
         this.servers = servers;
-        AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
-        AsyncHttpClientConfig asyncHttpClientConfig = builder
-                .setConnectTimeout(2 * 1000)
-                .setRequestTimeout(5 * 1000)
-                .setReadTimeout(5 * 1000)
-                .setMaxConnectionsPerHost(20)
-                .setMaxConnections(100)
-                .setAllowPoolingConnections(true)
-                .setPooledConnectionIdleTimeout(45 * 1000)
-                .build();
-        asyncHttpClient = new AsyncHttpClient(asyncHttpClientConfig);
+        asyncHttpClient = asyncHttpClient(config()
+                .setConnectTimeout(1 * 1000).setReadTimeout(2 * 1000).setRequestTimeout(5 * 1000)
+                .setMaxConnections(10).setMaxConnectionsPerHost(2).setKeepAlive(true)
+                .setConnectionTtl(45*1000).setFollowRedirect(true).setMaxRedirects(2)
+                .setMaxRequestRetry(2).build());
     }
 
     @Override
